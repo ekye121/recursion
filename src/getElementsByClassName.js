@@ -1,10 +1,10 @@
 var getElementsByClassName = function(className){
-  var allElements = document.getElementsByTagName("*");
-  var specificElements = [];
-  for (var i = 0; i < allElements.length; i++) {
-      if (allElements[i].classList.contains(className)){
-        specificElements.push(allElements[i])
-      }
-  };
-  return specificElements;
+    var allElements = document.getElementsByTagName("*");
+    var results = [];
+    _.each(allElements, function(item){
+        if (item.classList.contains(className)){
+            results.push(item)
+        }
+    });
+    return results;
 };
