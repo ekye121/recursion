@@ -5,24 +5,18 @@ stringIt.prototype.null = String;
 stringIt.prototype.string = function(string){return '"' + string + '"'};
 stringIt.prototype.array = function(array){return '[' + _.map(array, stringifyJSON) + ']'};
 stringIt.prototype.object = function(object){
-    var string = '{';
-    var first = true;
-    for (var key in object){
-        if (typeof object[key] === "undefined" || typeof object[key] === "function") break;
-        if (first) first = false;
-        else string += ','
-        string += stringifyJSON(key) + ':' + stringifyJSON(object[key]);
-    }
-    string += '}'
-    return string
-}
-
+    var results = [];
+    _.each(object, function(item, index){
+        if (typeof item !== 'undefined' && typeof item !== 'function'){
+            results.push('"' + index + '"' + ':' + stringifyJSON(item))
+        }
+    })
+    return '{' + results.join(',') + '}'
+};
 var stringifyJSON = function(obj) {
     var string = new stringIt();
     var type = typeof obj;
-    if (type === 'object'){
-        if (obj === null){type = 'null'}
-        else if (Array.isArray(obj)){type = 'array'}
-    }
+    if (obj === null) type = 'null';
+    if (Array.isArray(obj)) type = 'array';
     return string[type](obj);
 };
